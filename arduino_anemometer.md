@@ -1,362 +1,318 @@
 10/1/2023
 
-# Getting Started with Arduino
+We will be using the Adafruit Metro M4 board for this tutorial.
 
-All items in section 1 are available at the following link:
-<https://www.arduino.cc/en/Guide>
+<https://learn.adafruit.com/adafruit-metro-m4-express-featuring-atsamd51>
 
-## Installing
+# Setting up you IDE
 
-Select the proper install directions depending on which OS you are
-using: Windows or Linux.
+## Installing the Adafruit Metro M4 Arduino board:
 
-## Learning
+Adafruit provides a complete tutorial for the install here:
+<https://learn.adafruit.com/add-boards-arduino-v164/setup>. Here is a
+summary of the key steps.
 
-There are a few things you should read up on before beginning.
+1)  Create a "new sketch".
 
-- Introduction to Arduino
+2)  Save the sketch. The IDE will automatically create a folder with the
+    same name in the location you select. Your sketch will be in this
+    folder. It is important that the folder and sketch have the same
+    name and that the sketch is under this folder.
 
-- IDE
+3)  Go to File/Preferences. Click on the Settings tab. Click on the icon
+    next to the "Additional board managers URLs". Add the following URL:
+    https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
 
-- Libraires
+4)  Go to Tools/Board/Board Manager. This will open up the Board Manger
+    browser in the left side.
 
-- Adding a new board
+    1.  Search for: SAMD Boards
 
-# Overview of Arduino
+    2.  INSTALL the "Adafruit SAMD Boards"
 
-## What is Arduino and why use it?
+5)  Go to Tools/Board/Adafruit SAMD Boards and select the "Adafruit
+    Metro M4 (SAMD51)" board
 
-Arduino is an open-source electronics platform based on easy-to-use
-hardware and software. It's designed to make electronics more accessible
-to artists, designers, hobbyists, and anyone interested in creating
-interactive objects or environments.
+6)  You should now see "Adafruit Metro M4 (SAMD51)" under Tools/Board:
 
-Why use Arduino?
+## Connecting the Adafruit Metro M4 board:
 
-- **Simplicity**: Arduino boards are designed for beginners. The
-  programming environment is user-friendly, and there are plenty of
-  resources available for learning.
+1)  Plug the board into a USB port on your computer.
 
-- **Flexibility**: It can be used for a wide range of projects, from
-  simple tasks like turning on an LED to complex robotics.
+2)  Go to Tools/Port and select the port that your board is connected
+    to. For example, COM3 (Adafruit Metro M4 (SAMD51))
 
-- **Community**: There's a vast community of Arduino enthusiasts
-  worldwide, which means a lot of shared projects, tutorials, and
-  support.
+3)  Test that you are connected by clicking on Tools/Get Board Info. You
+    should get a popup with the basic info about the board (BN, VID,
+    PID, SN).
 
-## Family of Arduino Microcontrollers
+You are now ready to start programming and executing code on you
+Arduino!
 
-The Arduino family is vast, with various boards designed for different
-applications. Here's a brief overview:
+# Davis Instruments Vantage Pro2 Anemometer (Wind Sensor)
 
-- **Arduino Uno**: This is the most popular board and serves as the
-  standard model. It's based on the ATmega328P microcontroller and is
-  great for beginners.
+The Davis Vantage Pro2 weather station is a research-grade weather
+station that provides professional-grade data for weather enthusiasts,
+researchers, growers, and weather professionals. It reports wind speeds
+up to 200 mph and wind direction.
 
-- **Arduino Mega**: Offers more I/O pins and memory, making it suitable
-  for larger projects.
+<https://www.davisinstruments.com/products/anemometer-for-vantage-pro2-vantage-pro>
 
-- **Arduino Nano**: A compact board, ideal for projects where space is a
-  constraint.
+<https://www.amazon.com/Davis-Instruments-Anemometer-Vantage-Pro2/dp/B004GK9MFO>
 
-- **Arduino Leonardo**: Similar to the Uno but uses the ATmega32U4,
-  allowing it to emulate a computer mouse or keyboard.
+Key features of the Vantage anemometer are:
 
-- **Adafruit Boards**: Adafruit Industries offers a range of
-  microcontroller boards that are compatible with the Arduino IDE. Some
-  popular ones include the Feather series, Trinket, and the more
-  powerful Metro.
+1)  Wind vane with a variable resistance potentiometer that indicates
+    wind direction.
 
-- **Teensy**: Developed by PJRC, Teensy boards are known for their small
-  size and high performance. They're compatible with the Arduino
-  software but offer advanced features and better processing power.
+2)  Wind cups and magnetic sensor with pulse output (open drain to
+    ground transistor) for wind speed measurement.
 
-## Unique Features of Arduino Microcontrollers
+3)  An integrated 4-wire, 26 AWG, 40’ cable that has a standard RJ-11
+    connector.
 
-Compared to a standard PC, Arduino microcontrollers:
+# Interfacing the Anemometer with an Arduino
 
-- **Interact Directly with the Physical World**: Arduinos can read
-  inputs from sensors (like light or temperature) and turn it into an
-  output (like activating a motor or turning on an LED).
+The pinout for the Adafruit Metro M4 is located here:
 
-- **Real-time Operation**: They can operate in real-time, responding
-  immediately to environmental changes, which PCs aren't typically
-  designed to do.
+<https://learn.adafruit.com/adafruit-metro-m4-express-featuring-atsamd51/pinouts>.
 
-- **Low Power Consumption**: Arduinos consume much less power than PCs,
-  making them ideal for battery-operated projects.
+This board uses the same basic layout as the Arduino UNO. The pin names
+and locations should be the same. The Metro M4 does have a few extra
+items like a NeoPixel. It is important to note that the **M4 operates at
+3.3V and not 5V.**
 
-- **Compact Size**: Their small size allows them to be integrated into
-  all sorts of devices and projects.
+## RJ-11 connector
 
-## How is Arduino Different from Other Microcontrollers?
+You will need a RJ-11 connector breakout board to access the wire of the
+anemometer. One option is the “RJ11 6P6C Connector Breakout Board Module
+RA Screw terminals” from MDFLY and is available on Amazon (\$7.40).
 
-- **Open-Source**: Both the hardware design and the software are
-  open-source. This means anyone can modify, distribute, and use it.
+<https://www.amazon.com/gp/product/B0BC172XGK/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1>
 
-- **Community Support**: The vast Arduino community means a plethora of
-  shared knowledge, tutorials, and libraries.
+## Wind vane
 
-- **Cross-Platform IDE**: The Arduino Integrated Development Environment
-  (IDE) works on Windows, Mac OS X, and Linux.
+The wind van’s shaft is connected to a potentiometer. As the wind
+changes the direction of the van, the potentiometer reads 0.0 kOhms at
+its “North” position (0 deg) and 10.0 kOhms at its “South” position (180
+deg).
 
-- **Modularity**: Arduino boards are modular, allowing for easy
-  replacement of components or integration with other boards.
+To read this sensor with an Arduino you need to use an Analog to Digital
+Converter (ADC). There are 6 pins that can be used for analog inputs.
+They are labeled A0-A5. Note that the Arduino returns the number of ADC
+bits that are measured and not the actual voltage.
 
-- **Variety**: With the vast family of Arduino and compatible boards,
-  there's likely a board tailored to almost any project's needs.
+You can find the Arduino ADC tutorial here:
 
-Other microcontrollers might not have the same level of community
-support, open-source ethos, or ease of use that Arduino offers, making
-Arduino a preferred choice for many beginners and educators.
+<https://www.arduino.cc/en/Tutorial/BuiltInExamples/ReadAnalogVoltage>
 
-## Pros and Cons of Using Arduino
+The basic steps for the Metro M4 10 bit ADC, ADC Vref=3.3Volts (5V is
+not supported by Metro M4), and pin A0:
 
-Arduino is a powerful ecosystem. However, it has it limitations. Here
-are some of the pros and cons of using the Arduino platform. When
-choosing between Arduino and more powerful alternatives, it's essential
-to consider the project's requirements, the desired learning curve,
-budget, and the importance of community support.
+1)  **Read the voltage on the pin:** int adcBits = analogRead(A0);
 
-### Pros:
+2)  **Convert from bits to volts:** float voltage = adcBits \* (3.3 /
+    1023.0);
 
-- **Beginner-Friendly**: Arduino is designed with beginners in mind. The
-  programming environment is straightforward, and the syntax is simpler
-  than many other platforms.
+Note that the ADC is 10 bits and that equates to 1024 values, which
+range from 0-1023 values. Thus using the equation above, we get 1023bits
+\* (3.3V / 1023bits) = 3.3V.
 
-- **Open-Source**: Both the hardware and software of Arduino are
-  open-source. This means users can modify and tailor them to their
-  specific needs.
+For the wind vane, you technically do not need the actual voltage. You
+can directly convert from bits to heading angle:
 
-- **Strong Community Support**: The Arduino community is vast. This
-  means a plethora of shared projects, tutorials, forums, and libraries
-  are available, making troubleshooting and learning easier.
+> float heading_deg = ((float)adcBits / 1024.0) \* 360.0;
+>
+> \*Note that if you use 1024 (instead of 1023) in the conversion,
+> adcBits = 1023 will give you slightly less than 360°. This ensures
+> that your maximum reading doesn't roll back to North.
 
-- **Cross-Platform IDE**: The Arduino Integrated Development Environment
-  (IDE) is available for Windows, Mac OS X, and Linux.
+For the Vantage Pro, you need to hook up three wires.
 
-- **Modular Design**: Arduino boards are designed to be modular,
-  allowing for easy integration with sensors, actuators, and other
-  components.
+- **Red wire**: Ground
 
-- **Cost-Effective**: Arduino boards are generally affordable, making
-  them a popular choice for hobbyists and educators.
+- **Yellow wire**: 3.3V reference voltage for potentiometer
 
-- **Standardized Connectors**: Many Arduino boards use standardized
-  headers, making it easy to connect a wide variety of "shields" (add-on
-  boards) to extend their capabilities.
+- **Green wire**: Voltage signal output from the potentiometer that
+  determines direction
 
-### Cons:
+## Wind cups
 
-- **Limited Processing Power**: While suitable for many tasks, Arduino
-  boards (especially the basic ones) might not handle complex
-  computations or multitasking as efficiently as some other
-  microcontrollers.
+The wind cups spin on a shaft that has a magnetic pickup sensor. This
+sensor outputs a fixed number of pulses for every rotation of the shaft.
 
-- **Memory Constraints**: Basic Arduino boards have limited memory,
-  which can be a constraint for larger projects.
+To read this sensor with an Arduino you need to use a digital input.
+There are 13 pins that can be used for digital inputs. They are labeled
+0-13.
 
-- **Overhead of Abstraction**: The simplicity of the Arduino platform
-  comes at the cost of some overhead. For projects that require precise
-  timing or optimization, this can be a limitation.
+You can find the Arduino digital GPIO tutorial here:
 
-- **Not Suitable for Commercial Products**: While great for prototyping,
-  Arduino boards are often not optimized for commercial product
-  integration in terms of size, power consumption, and cost.
+<https://www.electronicwings.com/arduino/digital-gpio-of-arduino>
 
-- **Limited Networking Capabilities**: Basic Arduino boards don't come
-  with built-in advanced networking features like Wi-Fi or Bluetooth,
-  though they can be added via shields or modules.
+Interfacing with the pulse output for the Vantage Pro is more advanced
+than just hooking it up as a standard digital input. The interface to
+the sensor is defined as an “open drain to ground.” What this means is
+that the sensor acts like a switch. When it is not activated (open) the
+signal line is not connected to ground and no current can flow through
+the switch. The signal is in a “floating” state. When activated (closed)
+the sensor closes the circuit and connects the signal line to ground and
+current can flow. The signal is in a “grounded” state.
 
-### More Powerful Alternatives to Arduino:
+In order to use this style sensor, we need to connect the signal line to
+a digital-level voltage source via a “pull-up” resistor. When the sensor
+is in the open state, the signal line will now be “pulled up” to a high
+value. When the sensor is in the closed state, the signal will now be
+pulled low to ground. The pull-up resistor ensures that the voltage
+source is not “shorted” directly to the ground in the closed state.
 
-- **Raspberry Pi**: A mini-computer that runs a full OS and has digital
-  IO. It's more powerful than Arduino and can handle tasks like web
-  browsing, word processing, and even video streaming. It also supports
-  “HATs” that allow the RPi to be expand with microcontroller like
-  capability. However, it's not as real-time as Arduino, consumes more
-  power, and does not have the “simplicity” of the Arduino development
-  process.
+The basic steps for using a digital input with pull-up resistor on pin
+1:
 
-- **BeagleBone**: Similar to Raspberry Pi but with more focus on
-  interfacing with the physical world.
+1)  **In setup(), configure the pin:** pinMode(1, INPUT_PULLUP);
 
-# Arduino Code Development Process
+2)  **In loop(), read the pin’s state:** int value = digitalRead(pin);
 
-The Arduino code development process differs a bit from the traditional
-process. The Arduino development process is tailored for ease of use and
-rapid prototyping, especially for those new to programming or
-electronics. In contrast, traditional C++ development offers more
-flexibility and control but comes with a steeper learning curve.
+However, to count pulses this is not exactly the best method. The above
+requires you sample the pin fast enough that you do not miss any
+transitions in the signal’s state. The correct method is to use an
+“**interrupt**.”
 
-## Arduino C++ Development Process”
+You can find the Arduino Interrupts tutorial here:
 
-- **Sketches**: In the Arduino world, programs are often referred to as
-  "sketches." A sketch is a set of instructions written in the Arduino
-  programming language.
+<https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/>
 
-- **Arduino IDE**: The Arduino Integrated Development Environment (IDE)
-  is a simple, user-friendly platform where users write, compile, and
-  upload their sketches to an Arduino board.
+<https://www.arduino.cc/reference/en/language/functions/interrupts/interrupts/>
 
-- **Predefined Functions**:
+The basic steps for using an interrupt to read a digital input with
+pull-up resistor on pin 1:
 
-  - **setup()**: This function is called once when the Arduino board
-    starts up. It's used for initial setup tasks, like setting pin modes
-    or initializing serial communication.
+1)  **Define a global variable:** volatile unsigned long pulseCount = 0;
 
-  - **loop()**: After the setup() function runs, the loop() function
-    runs repeatedly, allowing the board to change and respond. It's the
-    heart of most Arduino sketches.
+2)  **Write an interrupt function:** void countPulse() {pulseCount++;}
 
-- **Compilation and Uploading**: Once the sketch is written, the user
-  clicks the "Upload" button in the Arduino IDE. The IDE then
-  automatically compiles the sketch and uploads it to the Arduino board.
+3)  **In setup(), configure the pin:** pinMode(1, INPUT_PULLUP);
 
-- **Libraries**: The Arduino platform provides a rich set of libraries
-  that simplify the task of interfacing with various sensors, actuators,
-  and modules. These can be easily included in the sketch.
+4)  **In setup(), attach the function to the interrupt:**
+    attachInterrupt(digitalPinToInterrupt(1), countPulse, RISING);
 
-## Traditional C++ Development Process
+5)  **In loop(), read the value of the global variable:**
 
-- **Source Code**: In traditional C++ development, programs are written
-  in source files, typically with .cpp extensions.
+> noInterrupts(); // Disable interrupts
+>
+> unsigned long pulseCountCopy = pulseCount; // count since last read
+>
+> pulseCount = 0; // reset the count
+>
+> interrupts(); // Enable interrupts
 
-- **IDEs**: Developers use Integrated Development Environments like
-  Visual Studio, Code::Blocks, or Eclipse. These IDEs offer advanced
-  features like code suggestions, debugging tools, and more.
+You will also need to use the millis() function to compute the time
+between reading the pulse count.
 
-- **Compilation**:
+1)  **Define a global variable:** unsigned long timePrev_ms = 0;
 
-  - **Preprocessing**: The preprocessor handles directives like
-    \#include and \#define.
+2)  **In loop(), calculate how much time has passed:**
 
-  - **Compilation**: The compiler translates the C++ source code into
-    assembly code or object code (.obj or .o files).
+> unsigned long timeNow_ms = millis();
+>
+> unsigned long elapsedTime_ms = timeNow_ms - timePrev_ms;
+>
+> float elapsedTime_sec = (float)elapsedTime_ms / 1000.0;
+>
+> timePrev_ms = timeNow_ms;
 
-- **Linking**: The linker takes one or more object files and combines
-  them with necessary library files to produce an executable file.
+Now that you can count the pulses and how much time has elapsed between
+counts, you can calculate the wind speed using the following equation.
 
-- **Execution**: The produced executable can be run on the target
-  platform.
+float speed_mph = (float)pulseCountCopy \* (2.25 / elapsedTime_sec);
 
-- **Libraries**: In traditional C++ development, libraries need to be
-  explicitly linked, and their headers included in the source code.
+For the Vantage Pro, you need to hook up two wires.
 
-## Contrast and Comparison
+- **Red wire**: Ground
 
-- **Simplicity vs. Complexity**: Arduino's development process is
-  streamlined for simplicity. The IDE takes care of many tasks behind
-  the scenes, making it beginner-friendly. Traditional C++ development
-  offers more control but requires a deeper understanding of the
-  process.
+- **Black wire**: Pulse single output
 
-- **Sketch vs. Source Code**: Arduino uses the term "sketch" for its
-  programs, emphasizing the idea of quickly drafting ideas. Traditional
-  C++ development uses terms like "source code" or "program."
+# Serial Output
 
-- **Automatic vs. Manual Steps**: In the Arduino IDE, compilation and
-  uploading are combined into a single step. In traditional C++
-  development, compiling, linking, and executing are distinct steps.
+To see the values that you measured and calculated, you can use the
+serial output capability of the Arduino and the Arduino IDE’s integrated
+tools “Serial Monitor” and “Serial Plotter”.
 
-- **Predefined Functions**: Arduino sketches have a standard structure
-  with setup() and loop() functions. Traditional C++ programs have a
-  main() function as their entry point, but beyond that, the structure
-  can vary widely.
+You can find the Arduino Serial information here:
+<https://www.arduino.cc/reference/en/language/functions/communication/serial/>
 
-- **Platform-Specific vs. General-Purpose**: Arduino sketches are
-  written with a specific board and its capabilities in mind.
-  Traditional C++ development is more general-purpose and can target a
-  wide range of platforms.
+## Configuring the serial port
 
-- **Libraries**: While both offer libraries to extend functionality,
-  Arduino's libraries are often more high-level, abstracting away much
-  of the complexity. In traditional C++ development, libraries might
-  require more configuration and understanding of their inner workings.
+The basic steps to setting up the serial capability of the Arduino:
 
-# Arduino Inputs and Outputs Overview
+1)  **In setup(), configure the port:** Serial.begin(115200);
 
-Arduino boards are versatile platforms that can interact with the
-external world through various inputs and outputs. These interfaces
-allow the board to sense, process, and act upon a wide range of signals.
-This section covers the core types of inputs and outputs available on an
-Arduino board, their subfunctionalities, and some illustrative examples.
-By understanding these core functionalities of an Arduino board, users
-can design and implement a wide range of projects, from simple LED
-displays to complex robotic systems.
+## Using the Serial capability
 
-## Digital Inputs/Outputs
+Using the Serial capability is easy, but has a few quirks. There are two
+basic commands that you can call in the loop() function.
 
-Digital pins on an Arduino board can read or produce only two states:
-HIGH (usually 5V or 3.3V) or LOW (0V).
+- Serial.print()
 
-- **Digital Input**: Read the state of a button, switch, or any binary
-  sensor.
+  - <https://www.arduino.cc/reference/en/language/functions/communication/serial/print/>
 
-  - *Example*: Detecting if a button is pressed or not.
+  - Prints data to the serial port as human-readable ASCII text.
 
-- **Digital Output**: Drive LEDs, relays, or any binary actuator.
+  - It does NOT automatically append a carriage return ('\r') to the
+    output.
 
-  - *Example*: Turning an LED on or off.
+  - It can print strings/text as well as variables, but not both at the
+    same time. You will need to use multiple Serial.print() calls to
+    create more complex output. Here is an example of printing a more
+    complex output of a string/text and a variable.
 
-## Analog Inputs
+> Serial.print(“My variable: ”); Serial.print(myVariable);
+> Serial.print(“\r”);
 
-Analog pins can read a range of voltages, allowing them to interpret
-more than just binary states.
+- Serial.println()
 
-- **Analog-to-Digital Conversion (ADC)**: Convert a varying voltage
-  level into a digital value.
+  - <https://www.arduino.cc/reference/en/language/functions/communication/serial/println/>
 
-  - *Example*: Reading the value from a potentiometer or a temperature
-    sensor.
+  - Same as Serial.print() but it DOES automatically append a carriage
+    return ('\r') to the output.
 
-## Analog Outputs (PWM)
+> Serial.println(“Hello World”);
 
-While Arduino doesn't have true analog output capabilities, it can
-simulate them using Pulse Width Modulation (PWM).
+## Serial Monitor
 
-- **Pulse Width Modulation (PWM)**: Vary the duty cycle of a digital
-  signal to simulate an analog output.
+The serial monitor allows you to directly read the serial output. You
+can access it by going to Tools/Serial Monitor. The only thing that you
+need to do is make sure the baud rate is set to the same thing you chose
+for Serial.begin().
 
-  - *Example*: Adjusting the brightness of an LED or controlling the
-    speed of a motor.
+<https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-serial-monitor>
 
-## Communication Interfaces
+## Serial Plotter
 
-Arduino boards come equipped with various communication interfaces to
-interact with other devices, sensors, or even other microcontrollers.
+The serial plotter allows you to automatically plot data sent using
+Serial. You can access it by going to Tools/Serial Plotter. Like the
+serial monitor, you need to make sure the baud rate is set to the same
+thing you chose for Serial.begin().
 
-- **Serial Communication (UART)**: Transmit and receive data serially.
+The serial plotter requires your data to formatted in a specific way for
+it to work. It requires the following simple format for a single line
+that is repeated for each update you want of the plotter.
 
-  - *Example*: Sending data to a computer or receiving commands from it.
+- Serial.print("Variable_1:");
 
-- **I2C (Inter-Integrated Circuit)**: A bus system for multi-device
-  communication.
+- Serial.print(var1);
 
-  - *Example*: Communicating with an OLED display or a digital sensor.
+- Serial.print(",");
 
-- **SPI (Serial Peripheral Interface)**: A synchronous serial data
-  protocol.
+- Serial.print("Variable_2:");
 
-  - *Example*: Interfacing with an SD card or a shift register.
+- Serial.print(var2);
 
-- **CAN (Controller Area Network)**: A robust communication protocol
-  mainly used in automotive applications.
+- …. Continue for all of your variables
 
-  - *Example*: Interfacing with car sensors or actuators in DIY
-    automotive projects.
+- Serial.println(); // terminate line using ‘/r’
 
-## 5. Specialized I/O
+The serial plotter will automatically plot and create a legend for your
+data. Note that the data will all be plotted using the same Y-axis
+scale. So, be sure your data is all close to the same range.
 
-Beyond the standard digital and analog pins, Arduino boards often
-feature specialized pins for specific functions.
-
-- **Interrupt Pins**: Respond to external events or changes in pin
-  states instantly.
-
-  - *Example*: Detecting a motion sensor's trigger without continuously
-    polling its state.
-
-- **External Oscillator Pins**: For connecting an external clock source.
-
-  - *Example*: Achieving more accurate time-based operations.
+<https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-serial-plotter>
