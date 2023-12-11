@@ -5,7 +5,7 @@ A simple arduino sketch and documentation for interfacing with a [Davis Vantage 
 
 Documents:
 * [Arduino Introduction_and_Overview](https://github.com/mwhannan74/Arduino_Davis_Vantage_Pro_Anemometer/blob/main/arduino_introduction_and_overview.md)
-* [Arduino Anemometer Tutorial](https://github.com/mwhannan74/Arduino_Davis_Vantage_Pro_Anemometer/blob/main/arduino_anemometer.md)
+* [Arduino Anemometer Tutorial](https://github.com/mwhannan74/Arduino_Davis_Vantage_Pro_Anemometer/blob/main/arduino_anemometer_tutorial.md)
 
 Other Hardware:
 * [Adafruit Metro M4](https://learn.adafruit.com/adafruit-metro-m4-express-featuring-atsamd51)
