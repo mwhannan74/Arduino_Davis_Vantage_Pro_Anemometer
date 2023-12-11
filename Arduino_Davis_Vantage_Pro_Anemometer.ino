@@ -47,12 +47,12 @@ void setup()
 //============================================================================================
 // LOOP
 //============================================================================================
-uint32_t _loop_time_ms = 2000;
+uint32_t _loop_time_ms = 2000; // Use 2 second update so we can get high enough speed resolution
 uint32_t _time_ms = millis();
 
 void loop() 
 {  
-  Serial.println("---------------------");
+//  Serial.println("---------------------");
   
   // get the current time in msec for this loop
   float time_ms = millis();
@@ -68,19 +68,27 @@ void loop()
 
   float etime_sec = etime_ms / 1000.0;
   float speed_mph = pulseCount*(2.25/etime_sec);
-  
-  Serial.print("speed_mph:"); Serial.print(speed_mph); Serial.print(", ");
-  Serial.print("etime_sec:"); Serial.print(etime_sec); Serial.print(", ");
-  Serial.print("pulseCount:"); Serial.print(pulseCount); Serial.print("\n");
+
+//  Serial.print("pulseCount:"); Serial.print(pulseCount); Serial.print("\n");
+//  Serial.print("etime_sec:"); Serial.print(etime_sec); Serial.print(", ");
+//  Serial.print("speed_mph:"); Serial.print(speed_mph); Serial.print(", ");
+
 
 
   //------------------------------------------------------------
   // Read potentiometer to determine range
   int potVal_bits = analogRead(_analogPin); // 10 bit = 1024
-  float heading = ((float)potVal_bits / 1024.0) * 360.0; // (1023/1024)*360 = 0.999*360 = 359.648 deg (ensures 0 is due North)
-  
-  Serial.print("heading:"); Serial.print(heading); Serial.print(", ");
-  Serial.print("potVal_bits:"); Serial.print(potVal_bits); Serial.print("\n");
+  float heading_deg = ((float)potVal_bits / 1024.0) * 360.0; // (1023/1024)*360 = 0.999*360 = 359.648 deg (ensures 0 is due North)
+
+//  Serial.print("potVal_bits:"); Serial.print(potVal_bits); Serial.print("\n");
+//  Serial.print("heading_deg:"); Serial.print(heading_deg); Serial.print(", ");
+
+
+Serial.print("speed_mph:"); 
+Serial.print(speed_mph); 
+Serial.print(", ");
+Serial.print("heading_deg:"); 
+Serial.println(heading_deg); 
 
 
 
